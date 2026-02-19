@@ -1,10 +1,5 @@
 package main
 
-import (
-	"fmt"
-	"os"
-)
-
 type cliCommand struct {
 	name        string
 	description string
@@ -29,26 +24,6 @@ func getCommands() map[string]cliCommand {
 			callback:    commandMap,
 		},
 	}
-}
-
-func commandExit() error {
-	fmt.Printf("Closing the Pokedex... Goodbye!\n")
-	os.Exit(0)
-
-	return nil
-}
-
-func commandHelp() error {
-	fmt.Printf("Welcome to the Pokedex!\n")
-	fmt.Printf("Usage:\n\n")
-
-	commands := getCommands()
-
-	for _, command := range commands {
-		fmt.Printf("%s: %s\n", command.name, command.description)
-	}
-
-	return nil
 }
 
 func commandMap() error {

@@ -27,7 +27,7 @@ func main() {
 			}
 
 		} else {
-			fmt.Printf("Unknown command")
+			fmt.Printf("Unknown command \n")
 		}
 	}
 

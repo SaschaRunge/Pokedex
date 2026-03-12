@@ -34,6 +34,8 @@ func (c *Cache) Add(key string, val []byte) {
 		createdAt: time.Now(),
 		val:       val,
 	}
+
+	//fmt.Printf("Added contents of '%v' to cache\n", key)
 }
 
 func (c *Cache) Get(key string) ([]byte, bool) {
@@ -61,6 +63,7 @@ func (c *Cache) reap(interval time.Duration) {
 	for key, entry := range c.entries {
 		if time.Since(entry.createdAt) >= interval {
 			delete(c.entries, key)
+			fmt.Printf("deleted '%v' from cache\n", key)
 		}
 	}
 }

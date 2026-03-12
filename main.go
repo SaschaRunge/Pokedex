@@ -4,8 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"time"
 
-	_ "github.com/SaschaRunge/Pokedex/internal/pokecache"
+	"github.com/SaschaRunge/Pokedex/internal/pokecache"
 )
 
 func main() {
@@ -13,17 +14,19 @@ func main() {
 	input := []string{}
 	commands := getCommands()
 	mapConfig := config{
-		Next:     "https://pokeapi.co/api/v2/location-area/",
+		Next:     "https://pokeapi.co/api/v2/location-area/?offset=0&limit=20",
 		Previous: "",
 	}
 
-	commands["help"].callback(&mapConfig)
+	cache := pokecache.NewCache(10 * time.Second)
+
+	commands["help"].callback(&mapConfig, cache)
 	for true {
 		fmt.Print("Pokedex >")
 		scanner.Scan()
 		input = cleanInput(scanner.Text())
 		if command, ok := commands[input[0]]; ok {
-			err := command.callback(&mapConfig)
+			err := command.callback(&mapConfig, cache)
 			if err != nil {
 				fmt.Printf("Callback returned error: %v\n", err)
 			}

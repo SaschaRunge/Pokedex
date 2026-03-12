@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-
-	"github.com/SaschaRunge/Pokedex/internal/pokecache"
 )
 
 type locationAreas struct {
@@ -24,28 +22,28 @@ type locationArea struct {
 	Name string `json:"name"`
 }
 
-func commandMap(config *config, cache *pokecache.Cache) error {
+func commandMap(config *config) error {
 	url := config.Next
 	if url == "" {
 		fmt.Printf("You are on the last page\n")
 		return nil
 	}
 
-	return printLocationAreas(url, config, cache)
+	return printLocationAreas(url, config)
 }
 
-func commandMapb(config *config, cache *pokecache.Cache) error {
+func commandMapb(config *config) error {
 	url := config.Previous
 	if url == "" {
 		fmt.Printf("You are on the first page\n")
 		return nil
 	}
 
-	return printLocationAreas(url, config, cache)
+	return printLocationAreas(url, config)
 }
 
-func printLocationAreas(url string, config *config, cache *pokecache.Cache) error {
-	locationAreasJSON, err := getLocationAreas(url, config, cache)
+func printLocationAreas(url string, config *config) error {
+	locationAreasJSON, err := getLocationAreas(url, config)
 	for _, result := range locationAreasJSON.Results {
 		fmt.Printf("%s\n", result.Name)
 	}
@@ -53,8 +51,8 @@ func printLocationAreas(url string, config *config, cache *pokecache.Cache) erro
 	return err
 }
 
-func getLocationAreas(url string, config *config, cache *pokecache.Cache) (locationAreas, error) {
-	dat, exists := cache.Get(url)
+func getLocationAreas(url string, config *config) (locationAreas, error) {
+	dat, exists := config.cache.Get(url)
 	if !exists {
 		res, err := http.Get(url)
 		if err != nil {
@@ -67,7 +65,7 @@ func getLocationAreas(url string, config *config, cache *pokecache.Cache) (locat
 			return locationAreas{}, err
 		}
 
-		cache.Add(url, dat)
+		config.cache.Add(url, dat)
 		fmt.Printf("Added contents of '%v' to cache\n", url)
 	} else {
 		fmt.Printf("Red contents of '%v' from cache\n", url)

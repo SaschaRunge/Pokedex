@@ -5,12 +5,13 @@ import "github.com/SaschaRunge/Pokedex/internal/pokecache"
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config, *pokecache.Cache) error
+	callback    func(*config) error
 }
 
 type config struct {
 	Next     string
 	Previous string
+	cache    *pokecache.Cache
 }
 
 func getCommands() map[string]cliCommand {

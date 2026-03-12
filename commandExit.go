@@ -3,11 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
-
-	"github.com/SaschaRunge/Pokedex/internal/pokecache"
 )
 
-func commandExit(config *config, cache *pokecache.Cache) error {
+func commandExit(config *config) error {
 	fmt.Printf("Closing the Pokedex... Goodbye!\n")
 	os.Exit(0)
 

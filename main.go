@@ -16,17 +16,16 @@ func main() {
 	mapConfig := config{
 		Next:     "https://pokeapi.co/api/v2/location-area/?offset=0&limit=20",
 		Previous: "",
+		cache:    pokecache.NewCache(10 * time.Second),
 	}
 
-	cache := pokecache.NewCache(10 * time.Second)
-
-	commands["help"].callback(&mapConfig, cache)
+	commands["help"].callback(&mapConfig)
 	for true {
 		fmt.Print("Pokedex >")
 		scanner.Scan()
 		input = cleanInput(scanner.Text())
 		if command, ok := commands[input[0]]; ok {
-			err := command.callback(&mapConfig, cache)
+			err := command.callback(&mapConfig)
 			if err != nil {
 				fmt.Printf("Callback returned error: %v\n", err)
 			}

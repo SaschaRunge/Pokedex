@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+
+	_ "github.com/SaschaRunge/Pokedex/internal/pokecache"
 )
 
 func main() {

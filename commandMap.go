@@ -29,7 +29,12 @@ func commandMap(config *config) error {
 		return nil
 	}
 
-	return printLocationAreas(url, config)
+	if locationAreasJSON, err := getLocationAreas(url, config); err == nil {
+		printLocationAreas(locationAreasJSON)
+		return nil
+	} else {
+		return err
+	}
 }
 
 func commandMapb(config *config) error {
@@ -39,16 +44,12 @@ func commandMapb(config *config) error {
 		return nil
 	}
 
-	return printLocationAreas(url, config)
-}
-
-func printLocationAreas(url string, config *config) error {
-	locationAreasJSON, err := getLocationAreas(url, config)
-	for _, result := range locationAreasJSON.Results {
-		fmt.Printf("%s\n", result.Name)
+	if locationAreasJSON, err := getLocationAreas(url, config); err == nil {
+		printLocationAreas(locationAreasJSON)
+		return nil
+	} else {
+		return err
 	}
-
-	return err
 }
 
 func getLocationAreas(url string, config *config) (locationAreas, error) {
@@ -81,4 +82,10 @@ func getLocationAreas(url string, config *config) (locationAreas, error) {
 	config.Next = locationAreasJSON.Next
 
 	return locationAreasJSON, nil
+}
+
+func printLocationAreas(locationAreasJSON locationAreas) {
+	for _, result := range locationAreasJSON.Results {
+		fmt.Printf("%s\n", result.Name)
+	}
 }

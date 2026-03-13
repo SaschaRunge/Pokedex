@@ -31,9 +31,9 @@ func TestCache(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		actual, exists := cache.Get(c.key)
+		actual, ok := cache.Get(c.key)
 		expected := c.input
-		if !exists {
+		if !ok {
 			t.Errorf("Cached entry does not exists!")
 		}
 

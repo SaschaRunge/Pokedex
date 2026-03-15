@@ -9,13 +9,6 @@ import (
 
 type Client struct {
 	cache *pokecache.Cache
-	config
-}
-
-type config struct {
-	Next     string
-	Previous string
-	cache    *pokecache.Cache
 }
 
 func (c *Client) GetData(url string) ([]byte, error) {

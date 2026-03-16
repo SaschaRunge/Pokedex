@@ -25,9 +25,9 @@ func main() {
 		scanner.Scan()
 		input = cleanInput(scanner.Text())
 		if command, ok := commands[input[0]]; ok {
-			err := command.callback(&mapConfig)
+			err := command.callback(&mapConfig, input...)
 			if err != nil {
-				fmt.Printf("Callback returned error: %v\n", err)
+				fmt.Printf("\nCallback returned error: %v\n", err)
 			}
 
 		} else {

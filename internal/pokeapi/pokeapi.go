@@ -1,6 +1,9 @@
 package pokeapi
 
 import (
+	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"time"
@@ -20,7 +23,7 @@ type Client struct {
 
 func NewClient() *Client {
 	return &Client{
-		cache: pokecache.NewCache(10 * time.Second),
+		cache: pokecache.NewCache(120 * time.Second),
 	}
 }
 
@@ -31,6 +34,11 @@ func (c *Client) GetData(url string) ([]byte, error) {
 		if err != nil {
 			return []byte{}, err
 		}
+		if res.StatusCode == 404 {
+			err_string := fmt.Sprintf("404: %s not found.\nThis is likely due to a typo in an argument provided.", url)
+			return []byte{}, errors.New(err_string)
+		}
+
 		defer res.Body.Close()
 
 		dat, err = io.ReadAll(res.Body)
@@ -42,4 +50,28 @@ func (c *Client) GetData(url string) ([]byte, error) {
 	}
 
 	return dat, nil
+}
+
+func (c *Client) GetEncounters(location string) ([]string, error) {
+	url := "https://pokeapi.co/api/v2/location-area/" + location
+	dat, err := c.GetData(url)
+
+	if err != nil {
+		return []string{}, err
+	}
+
+	encountersJSON := encounters{}
+	err = json.Unmarshal(dat, &encountersJSON)
+	if err != nil {
+		return []string{}, err
+	}
+
+	encounters := []string{}
+
+	for _, pokemon := range encountersJSON.Pokemon_encounters {
+
+		encounters = append(encounters, pokemon.Pokemon.Name)
+	}
+
+	return encounters, nil
 }

@@ -1,14 +1,27 @@
 package main
 
 import (
-	_ "encoding/json"
-	_ "fmt"
-	_ "io"
-	_ "net/http"
+	"errors"
+	"fmt"
 
 	"github.com/SaschaRunge/Pokedex/internal/pokeapi"
 )
 
-func commandExplore(config *pokeapi.Config) error {
-	panic("not implemented")
+func commandExplore(config *pokeapi.Config, args ...string) error {
+	if len(args) <= 1 {
+		return errors.New("Missing argument for explore-command. Usage: explore {location}.")
+	}
+	location := args[1]
+	fmt.Printf("Exploring %s... .\n", args[1])
+
+	encounters, err := config.Client.GetEncounters(location)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Found Pokemon:")
+	for _, pokemon := range encounters {
+		fmt.Printf("- %s\n", pokemon)
+	}
+	return nil
 }

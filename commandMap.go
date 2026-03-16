@@ -22,7 +22,8 @@ type locationArea struct {
 	Name string `json:"name"`
 }
 
-func commandMap(config *pokeapi.Config) error {
+func commandMap(config *pokeapi.Config, args ...string) error {
+	fmt.Println("Scrolling forward... .")
 	url := config.Next
 	if url == "" {
 		fmt.Printf("You are on the last page\n")
@@ -38,7 +39,8 @@ func commandMap(config *pokeapi.Config) error {
 	}
 }
 
-func commandMapb(config *pokeapi.Config) error {
+func commandMapb(config *pokeapi.Config, args ...string) error {
+	fmt.Println("Scrolling backwards... .")
 	url := config.Previous
 	if url == "" {
 		fmt.Printf("You are on the first page\n")
@@ -74,7 +76,8 @@ func getLocationAreas(url string, client *pokeapi.Client) (locationAreas, error)
 }
 
 func printLocationAreas(locationAreasJSON locationAreas) {
+	fmt.Println("Found locations:")
 	for _, result := range locationAreasJSON.Results {
-		fmt.Printf("%s\n", result.Name)
+		fmt.Printf("- %s\n", result.Name)
 	}
 }

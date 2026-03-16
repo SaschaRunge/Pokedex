@@ -1,7 +1,7 @@
 package pokecache
 
 import (
-	"fmt"
+	_ "fmt"
 	"sync"
 	"time"
 )
@@ -50,8 +50,8 @@ func (c *Cache) reapLoop(interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	for t := range ticker.C {
-		fmt.Printf("ticker at: %v\n", t) //TODO: drop t once confirmed working
+	for range ticker.C {
+		//fmt.Printf("ticker at: %v\n", t) //TODO: drop t once confirmed working
 		c.reap(interval)
 	}
 }
@@ -63,7 +63,7 @@ func (c *Cache) reap(interval time.Duration) {
 	for key, entry := range c.entries {
 		if time.Since(entry.createdAt) >= interval {
 			delete(c.entries, key)
-			fmt.Printf("deleted '%v' from cache\n", key)
+			//fmt.Printf("deleted '%v' from cache\n", key)
 		}
 	}
 }

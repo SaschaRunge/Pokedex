@@ -5,8 +5,10 @@ import (
 	_ "fmt"
 	_ "io"
 	_ "net/http"
+
+	"github.com/SaschaRunge/Pokedex/internal/pokeapi"
 )
 
-func commandExplore(config *config) error {
+func commandExplore(config *pokeapi.Config) error {
 	panic("not implemented")
 }

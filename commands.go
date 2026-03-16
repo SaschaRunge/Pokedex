@@ -1,17 +1,13 @@
 package main
 
-import "github.com/SaschaRunge/Pokedex/internal/pokecache"
+import (
+	"github.com/SaschaRunge/Pokedex/internal/pokeapi"
+)
 
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
-}
-
-type config struct {
-	Next     string
-	Previous string
-	cache    *pokecache.Cache
+	callback    func(*pokeapi.Config) error
 }
 
 func getCommands() map[string]cliCommand {

@@ -3,12 +3,25 @@ package pokeapi
 import (
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/SaschaRunge/Pokedex/internal/pokecache"
 )
 
+type Config struct {
+	Next     string
+	Previous string
+	Client   *Client
+}
+
 type Client struct {
 	cache *pokecache.Cache
+}
+
+func NewClient() *Client {
+	return &Client{
+		cache: pokecache.NewCache(10 * time.Second),
+	}
 }
 
 func (c *Client) GetData(url string) ([]byte, error) {

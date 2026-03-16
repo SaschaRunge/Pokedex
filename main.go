@@ -4,19 +4,19 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"time"
 
-	"github.com/SaschaRunge/Pokedex/internal/pokecache"
+	"github.com/SaschaRunge/Pokedex/internal/pokeapi"
 )
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	input := []string{}
 	commands := getCommands()
-	mapConfig := config{
+	client := pokeapi.NewClient()
+	mapConfig := pokeapi.Config{
 		Next:     "https://pokeapi.co/api/v2/location-area/?offset=0&limit=20",
 		Previous: "",
-		cache:    pokecache.NewCache(10 * time.Second),
+		Client:   client,
 	}
 
 	commands["help"].callback(&mapConfig)

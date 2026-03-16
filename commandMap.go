@@ -3,10 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 
-	"github.com/SaschaRunge/Pokedex/internal/pokecache"
+	"github.com/SaschaRunge/Pokedex/internal/pokeapi"
 )
 
 type locationAreas struct {
@@ -24,14 +22,14 @@ type locationArea struct {
 	Name string `json:"name"`
 }
 
-func commandMap(config *config) error {
+func commandMap(config *pokeapi.Config) error {
 	url := config.Next
 	if url == "" {
 		fmt.Printf("You are on the last page\n")
 		return nil
 	}
 
-	if locationAreasJSON, err := getLocationAreas(url, config.cache); err == nil {
+	if locationAreasJSON, err := getLocationAreas(url, config.Client); err == nil {
 		updateConfig(config, locationAreasJSON)
 		printLocationAreas(locationAreasJSON)
 		return nil
@@ -40,14 +38,14 @@ func commandMap(config *config) error {
 	}
 }
 
-func commandMapb(config *config) error {
+func commandMapb(config *pokeapi.Config) error {
 	url := config.Previous
 	if url == "" {
 		fmt.Printf("You are on the first page\n")
 		return nil
 	}
 
-	if locationAreasJSON, err := getLocationAreas(url, config.cache); err == nil {
+	if locationAreasJSON, err := getLocationAreas(url, config.Client); err == nil {
 		updateConfig(config, locationAreasJSON)
 		printLocationAreas(locationAreasJSON)
 		return nil
@@ -56,33 +54,19 @@ func commandMapb(config *config) error {
 	}
 }
 
-func updateConfig(config *config, locationAreasJSON locationAreas) {
+func updateConfig(config *pokeapi.Config, locationAreasJSON locationAreas) {
 	config.Previous = locationAreasJSON.Previous
 	config.Next = locationAreasJSON.Next
 }
 
-func getLocationAreas(url string, cache *pokecache.Cache) (locationAreas, error) {
-	dat, exists := cache.Get(url)
-	if !exists {
-		res, err := http.Get(url)
-		if err != nil {
-			return locationAreas{}, err
-		}
-		defer res.Body.Close()
-
-		dat, err = io.ReadAll(res.Body)
-		if err != nil {
-			return locationAreas{}, err
-		}
-
-		cache.Add(url, dat)
-		fmt.Printf("Added contents of '%v' to cache\n", url)
-	} else {
-		fmt.Printf("Red contents of '%v' from cache\n", url)
+func getLocationAreas(url string, client *pokeapi.Client) (locationAreas, error) {
+	dat, err := client.GetData(url)
+	if err != nil {
+		return locationAreas{}, nil
 	}
 
 	locationAreasJSON := locationAreas{}
-	err := json.Unmarshal(dat, &locationAreasJSON)
+	err = json.Unmarshal(dat, &locationAreasJSON)
 	if err != nil {
 		return locationAreas{}, err
 	}

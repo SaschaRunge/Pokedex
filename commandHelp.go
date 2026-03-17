@@ -2,11 +2,9 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/SaschaRunge/Pokedex/internal/pokeapi"
 )
 
-func commandHelp(config *pokeapi.Config, args ...string) error {
+func commandHelp(config *config, args ...string) error {
 	fmt.Printf("Welcome to the Pokedex!\n")
 	fmt.Printf("Usage:\n\n")
 

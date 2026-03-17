@@ -11,19 +11,13 @@ import (
 	"github.com/SaschaRunge/Pokedex/internal/pokecache"
 )
 
-type Config struct {
-	Next     string
-	Previous string
-	Client   *Client
-}
-
 type Client struct {
 	cache *pokecache.Cache
 }
 
 func NewClient() *Client {
 	return &Client{
-		cache: pokecache.NewCache(120 * time.Second),
+		cache: pokecache.NewCache(180 * time.Second),
 	}
 }
 
@@ -74,4 +68,22 @@ func (c *Client) GetEncounters(location string) ([]string, error) {
 	}
 
 	return encounters, nil
+}
+
+func (c *Client) GetPokemon(pokemon string) (Pokemon, error) {
+	url := "https://pokeapi.co/api/v2/pokemon/" + pokemon
+	dat, err := c.GetData(url)
+
+	if err != nil {
+		return Pokemon{}, err
+	}
+
+	pokemonJSON := Pokemon{}
+	err = json.Unmarshal(dat, &pokemonJSON)
+	if err != nil {
+		return Pokemon{}, err
+	}
+
+	//fmt.Printf("TEST %s", pokemonJSON.Name)
+	return pokemonJSON, nil
 }

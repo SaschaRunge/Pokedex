@@ -22,7 +22,7 @@ type locationArea struct {
 	Name string `json:"name"`
 }
 
-func commandMap(config *pokeapi.Config, args ...string) error {
+func commandMap(config *config, args ...string) error {
 	fmt.Println("Scrolling forward... .")
 	url := config.Next
 	if url == "" {
@@ -39,7 +39,7 @@ func commandMap(config *pokeapi.Config, args ...string) error {
 	}
 }
 
-func commandMapb(config *pokeapi.Config, args ...string) error {
+func commandMapb(config *config, args ...string) error {
 	fmt.Println("Scrolling backwards... .")
 	url := config.Previous
 	if url == "" {
@@ -56,7 +56,7 @@ func commandMapb(config *pokeapi.Config, args ...string) error {
 	}
 }
 
-func updateConfig(config *pokeapi.Config, locationAreasJSON locationAreas) {
+func updateConfig(config *config, locationAreasJSON locationAreas) {
 	config.Previous = locationAreasJSON.Previous
 	config.Next = locationAreasJSON.Next
 }

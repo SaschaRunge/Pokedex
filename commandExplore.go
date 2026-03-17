@@ -3,11 +3,9 @@ package main
 import (
 	"errors"
 	"fmt"
-
-	"github.com/SaschaRunge/Pokedex/internal/pokeapi"
 )
 
-func commandExplore(config *pokeapi.Config, args ...string) error {
+func commandExplore(config *config, args ...string) error {
 	if len(args) <= 1 {
 		return errors.New("Missing argument for explore-command. Usage: explore {location}.")
 	}

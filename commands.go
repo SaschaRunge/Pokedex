@@ -1,24 +1,25 @@
 package main
 
-import (
-	"github.com/SaschaRunge/Pokedex/internal/pokeapi"
-)
-
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*pokeapi.Config, ...string) error
+	callback    func(*config, ...string) error
 }
 
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
+		"catch": {
+			name:        "catch <pokemon_name>",
+			description: "Tries to catch the specified pokemon. Takes a pokemon name as second argument.",
+			callback:    commandCatch,
+		},
 		"exit": {
 			name:        "exit",
 			description: "Exit the Pokedex",
 			callback:    commandExit,
 		},
 		"explore": {
-			name:        "explore",
+			name:        "explore <location_name>",
 			description: "Displays names of pokemon encountered at the specified region. Takes location name as second argument.",
 			callback:    commandExplore,
 		},

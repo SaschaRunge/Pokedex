@@ -30,8 +30,13 @@ func getCommands() map[string]cliCommand {
 		},
 		"inspect": {
 			name:        "inspect <pokemon>",
-			description: "Inspects a previously caught pokemon. Takes a pokemon name as second argument.",
+			description: "Inspects any pokemon in your pokedex. Takes a pokemon name as second argument.",
 			callback:    commandInspect,
+		},
+		"pokedex": {
+			name:        "pokedex",
+			description: "Shows the pokemon you've caught and that are currently in your pokedex.",
+			callback:    commandPokedex,
 		},
 		"explore": {
 			name:        "explore <location>",

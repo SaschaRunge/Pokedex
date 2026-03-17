@@ -11,17 +11,17 @@ import (
 	"github.com/SaschaRunge/Pokedex/internal/pokecache"
 )
 
-type Client struct {
+type HttpsClient struct {
 	cache *pokecache.Cache
 }
 
-func NewClient() *Client {
-	return &Client{
+func NewClient() *HttpsClient {
+	return &HttpsClient{
 		cache: pokecache.NewCache(180 * time.Second),
 	}
 }
 
-func (c *Client) GetData(url string) ([]byte, error) {
+func (c *HttpsClient) GetData(url string) ([]byte, error) {
 	dat, ok := c.cache.Get(url)
 	if !ok {
 		res, err := http.Get(url)
@@ -46,7 +46,7 @@ func (c *Client) GetData(url string) ([]byte, error) {
 	return dat, nil
 }
 
-func (c *Client) GetEncounters(location string) ([]string, error) {
+func (c *HttpsClient) GetEncounters(location string) ([]string, error) {
 	url := "https://pokeapi.co/api/v2/location-area/" + location
 	dat, err := c.GetData(url)
 
@@ -70,7 +70,7 @@ func (c *Client) GetEncounters(location string) ([]string, error) {
 	return encounters, nil
 }
 
-func (c *Client) GetPokemon(pokemon string) (Pokemon, error) {
+func (c *HttpsClient) GetPokemon(pokemon string) (Pokemon, error) {
 	url := "https://pokeapi.co/api/v2/pokemon/" + pokemon
 	dat, err := c.GetData(url)
 

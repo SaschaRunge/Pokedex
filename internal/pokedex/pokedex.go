@@ -20,6 +20,11 @@ func (p *Pokedex) Add(pokemon pokeapi.Pokemon) {
 	p.content[pokemon.Name] = pokemon
 }
 
+func (p *Pokedex) Get(pokemonName string) (pokeapi.Pokemon, bool) {
+	pokemon, exists := p.content[pokemonName]
+	return pokemon, exists
+}
+
 func (p *Pokedex) GetEntries() []string {
 	entries := []string{}
 	for _, pokemon := range p.content {

@@ -10,12 +10,12 @@ import (
 
 func commandCatch(config *config, args ...string) error {
 	if len(args) <= 1 {
-		return errors.New("Missing argument for catch-command. Usage: catch <pokemon_name>.")
+		return errors.New("Missing argument for catch-command. Usage: catch <pokemon>.")
 	}
-	arg := args[1]
+	pokemonName := args[1]
 	fmt.Printf("Throwing a Pokeball at %s... .\n", args[1])
 
-	pokemon, err := config.Client.GetPokemon(arg)
+	pokemon, err := config.HttpsClient.GetPokemon(pokemonName)
 	if err != nil {
 		return err
 	}

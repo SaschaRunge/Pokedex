@@ -9,20 +9,20 @@ import (
 )
 
 type config struct {
-	Next     string
-	Previous string
-	Client   *pokeapi.Client
-	Pokedex  *pokedex.Pokedex
-	random   *rand.Rand
+	Next        string
+	Previous    string
+	HttpsClient *pokeapi.HttpsClient
+	Pokedex     *pokedex.Pokedex
+	random      *rand.Rand
 }
 
-func NewConfig(next, previous string, client *pokeapi.Client) config {
+func NewConfig(next, previous string, client *pokeapi.HttpsClient) config {
 	return config{
-		Next:     next,
-		Previous: previous,
-		Client:   client,
-		Pokedex:  pokedex.NewPokedex(),
-		random:   rand.New(rand.NewSource(time.Now().UnixNano())),
+		Next:        next,
+		Previous:    previous,
+		HttpsClient: client,
+		Pokedex:     pokedex.NewPokedex(),
+		random:      rand.New(rand.NewSource(time.Now().UnixNano())),
 	}
 }
 

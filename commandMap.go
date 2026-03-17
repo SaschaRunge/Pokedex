@@ -30,7 +30,7 @@ func commandMap(config *config, args ...string) error {
 		return nil
 	}
 
-	if locationAreasJSON, err := getLocationAreas(url, config.Client); err == nil {
+	if locationAreasJSON, err := getLocationAreas(url, config.HttpsClient); err == nil {
 		updateConfig(config, locationAreasJSON)
 		printLocationAreas(locationAreasJSON)
 		return nil
@@ -47,7 +47,7 @@ func commandMapb(config *config, args ...string) error {
 		return nil
 	}
 
-	if locationAreasJSON, err := getLocationAreas(url, config.Client); err == nil {
+	if locationAreasJSON, err := getLocationAreas(url, config.HttpsClient); err == nil {
 		updateConfig(config, locationAreasJSON)
 		printLocationAreas(locationAreasJSON)
 		return nil
@@ -61,7 +61,7 @@ func updateConfig(config *config, locationAreasJSON locationAreas) {
 	config.Next = locationAreasJSON.Next
 }
 
-func getLocationAreas(url string, client *pokeapi.Client) (locationAreas, error) {
+func getLocationAreas(url string, client *pokeapi.HttpsClient) (locationAreas, error) {
 	dat, err := client.GetData(url)
 	if err != nil {
 		return locationAreas{}, nil
